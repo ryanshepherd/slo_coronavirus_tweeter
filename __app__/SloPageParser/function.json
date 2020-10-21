@@ -1,0 +1,29 @@
+{
+  "scriptFile": "__init__.py",
+  "bindings": [
+    {
+      "name": "msg",
+      "type": "queueTrigger",
+      "direction": "in",
+      "queueName": "parse-queue"
+    },
+    {
+      "type": "blob",
+      "direction": "in",
+      "name": "contentStream",
+      "path": "corona-page-snapshots/{queueTrigger}"
+    },
+    {
+      "name": "gsheetQueue",
+      "type": "queue",
+      "direction": "out",
+      "queueName": "gsheet-queue"
+    },
+    {
+      "name": "statsQueue",
+      "type": "queue",
+      "direction": "out",
+      "queueName": "calc-stats-queue"
+    }
+  ]
+}

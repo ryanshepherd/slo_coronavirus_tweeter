@@ -1,0 +1,23 @@
+{
+  "scriptFile": "__init__.py",
+  "bindings": [
+    {
+      "name": "msg",
+      "type": "queueTrigger",
+      "direction": "in",
+      "queueName": "calc-stats-queue"
+    },
+    {
+      "name": "textQueue",
+      "type": "queue",
+      "direction": "out",
+      "queueName": "text-queue"
+    },
+    {
+      "name": "tweetQueue",
+      "type": "queue",
+      "direction": "out",
+      "queueName": "tweet-queue"
+    }
+  ]
+}

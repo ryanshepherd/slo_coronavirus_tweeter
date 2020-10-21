@@ -1,0 +1,21 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "<< Azure Storage connection string >>",
+    "FUNCTIONS_WORKER_RUNTIME": "python",
+    "DBConnectionString": "host=localhost port=5432 dbname=coronavirus user=myusername password=mypassword",
+    "CitiesList": "paso_robles,san_luis_obispo_city,nipomo,atascadero,arroyo_grande,san_miguel,grover_beach,templeton,pismo_beach,oceano,los_osos,cmc_inmates,morro_bay,cambria,santa_margarita,shandon,cayucos,avila,creston,san_simeon,under_investigation,other",
+    "GoogleWorkbook": "SLO Coronavirus Cases",
+    "SloTimerCron": "*/15 * * * * *",
+    "SloPageUrl": "https://e.infogram.com/f44206e5-beb2-4057-b402-17d7821d3155",
+    "TwilioPhoneNumber": "+18005555555",
+    "TwilioAccountSid": "",
+    "TwilioAuthToken": "",
+    "TwitterConsumerKey": "",
+    "TwitterConsumerSecret": "",
+    "TwitterAccessToken": "",
+    "TwitterAccessTokenSecret": "",
+    "EnableTexts": false,
+    "EnableTweets": true
+  }
+}
