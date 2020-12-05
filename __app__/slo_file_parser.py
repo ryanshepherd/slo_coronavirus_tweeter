@@ -125,12 +125,16 @@ class SloPage:
             }
 
         # Retrieve test positivity
-        if self.update_date >= datetime(2020, 9, 14):
-            stats_list = [item["data"] for item in self.elements if "positivity" in str(item.get("data")).lower()][0][0]
-            test_positivity: str = [item for item in stats_list if "positivity" in str(item).lower()][0][0]
-            test_positivity = re.search('\d+(\.\d+)?', test_positivity)[0]
-            status_dict["test_positivity"] = float(test_positivity)
-
+        try:
+            if self.update_date >= datetime(2020, 9, 14):
+                stats_list = [item["data"] for item in self.elements if "positivity" in str(item.get("data")).lower()][0][0]
+                test_positivity: str = [item for item in stats_list if "positivity" in str(item).lower()][0][0]
+                test_positivity = re.search('\d+(\.\d+)?', test_positivity)[0]
+                status_dict["test_positivity"] = float(test_positivity)
+        # Some days, they just don't publish it, apparently.
+        except:
+            status_dict["test_positivity"] = None
+    
         return status_dict
 
     # Extract: Case counts by Region

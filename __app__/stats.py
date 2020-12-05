@@ -167,7 +167,8 @@ class Stats:
             message += self.__rename_city(k) + " (+" + str(v) + ")\n"
 
         # Positivity
-        message += \
-            f"\nPositivity: {status_dict['test_positivity']: .2f}%"
+        if status_dict['test_positivity'] != None and not math.isnan(status_dict['test_positivity']):
+            message += \
+                f"\nPositivity: {status_dict['test_positivity']: .2f}%"
 
         return message
