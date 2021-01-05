@@ -30,7 +30,6 @@ def parse_slo_file(content: str):
 
 class SloPage:
     elements = []
-    year = 2020
 
 
     update_date: datetime
@@ -72,11 +71,12 @@ class SloPage:
 
     def __get_date(self):
         element = [item for item in self.elements if "particle_type" in item and "bodytitle" in item["particle_type"]][0]
-        results = re.search("As of (\d+)\/(\d+)", element["text"])
+        results = re.search(r"As of (\d+)/(\d+).*/(2\d)", element["text"])
         month = ("00" + results.group(1))[-2:]  # Pad with zeros
         day = ("00" + results.group(2))[-2:]
+        year = ("20" + results.group(3))
 
-        return datetime.fromisoformat(f"{self.year}-{month}-{day}")
+        return datetime.fromisoformat(f"{year}-{month}-{day}")
 
     # Extract: Total, Recovered, Deaths, Hospitalized, ICU
     def get_status(self):
