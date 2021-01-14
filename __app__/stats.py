@@ -2,6 +2,8 @@ import psycopg2
 import pandas as pd
 import numpy as np
 import math
+import requests
+import json
 
 
 class Stats:
@@ -99,6 +101,26 @@ class Stats:
         return delta.sort_values(delta.columns[0], ascending=False)[:topcount] \
             .to_dict()["delta"]
 
+    def get_vaccinated(self):
+        # A bit hacky to do this here instead of doing it earlier...
+        # but hopefully we won't need this app much longer.
+
+        try:
+            # Retrieve vaccination data from CDC
+            response = requests.get("https://covid.cdc.gov/covid-data-tracker/COVIDData/getAjaxData?id=vaccination_data")
+            
+            # Parse our CA dosing info
+            content = json.loads(response.content)
+
+            ca_data = [item for item in content["vaccination_data"] if item["Location"] == "CA"][0]
+            
+            dose1 = ca_data["Administered_Dose1_Per_100K"]
+            dose2 = ca_data["Administered_Dose2_Per_100K"]
+        except:
+            return (None, None)
+
+        return  (dose1, dose2)
+
     # def get_test_positivity(self):
         
     #     # Business days over which to measure test positivity
@@ -166,9 +188,18 @@ class Stats:
         for k, v in top_cities.items():
             message += self.__rename_city(k) + " (+" + str(v) + ")\n"
 
-        # Positivity
-        if status_dict['test_positivity'] != None and not math.isnan(status_dict['test_positivity']):
+        # Positivity is not being published anymore
+
+        # # Positivity
+        # if status_dict['test_positivity'] != None and not math.isnan(status_dict['test_positivity']):
+        #     message += \
+        #         f"\nPositivity: {status_dict['test_positivity']: .2f}%"
+
+        # Vaccination data
+        (dose1, dose2) = self.get_vaccinated()
+
+        if dose1 != None and dose2 != None:
             message += \
-                f"\nPositivity: {status_dict['test_positivity']: .2f}%"
+                f"\nCA Vaccinated: {dose2 / 100000 * 100:.2f}%"
 
         return message
