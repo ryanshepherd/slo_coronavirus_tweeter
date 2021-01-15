@@ -1,5 +1,5 @@
 # The Project
-This is an Azure Function app that sends out daily texts and tweets about coronavirus stats in San Luis Obispo county.
+This is an Azure Function app that sends out daily texts and tweets about coronavirus stats in San Luis Obispo county. Check out the feed: [@SloCovidTracker](https://twitter.com/SloCovidTracker).
 
 # The Data
 Data is scraped from the Emergency SLO website daily. You can view the full history of scraped statistics on this [Google Sheet](https://docs.google.com/spreadsheets/d/1v-iCXfgCTIVd7BcFFJwBY4P3oye3mvqpr4PbWxlk6KE)
