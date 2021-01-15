@@ -4,6 +4,7 @@ import numpy as np
 import math
 import requests
 import json
+import logging
 
 
 class Stats:
@@ -114,12 +115,14 @@ class Stats:
 
             ca_data = [item for item in content["vaccination_data"] if item["Location"] == "CA"][0]
             
-            dose1 = ca_data["Administered_Dose1_Per_100K"]
+            #dose1 = ca_data["Administered_Dose1_Per_100K"]
             dose2 = ca_data["Administered_Dose2_Per_100K"]
-        except:
-            return (None, None)
+        except Exception as e:
+            logging.error("Failed to retrieve vaccine info.")
+            logging.error(e)
+            return None
 
-        return  (dose1, dose2)
+        return  dose2
 
     # def get_test_positivity(self):
         
@@ -196,9 +199,9 @@ class Stats:
         #         f"\nPositivity: {status_dict['test_positivity']: .2f}%"
 
         # Vaccination data
-        (dose1, dose2) = self.get_vaccinated()
+        dose2 = self.get_vaccinated()
 
-        if dose1 != None and dose2 != None:
+        if dose2 != None:
             message += \
                 f"\nCA Vaccinated: {dose2 / 100000 * 100:.2f}%"
 
