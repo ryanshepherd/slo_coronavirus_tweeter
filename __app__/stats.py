@@ -159,7 +159,8 @@ class Stats:
             "Grover Beach": "Grover",
             "Pismo Beach": "Pismo",
             "Arroyo Grande": "A.G.",
-            "Ca Mens Colony Inmates": "Mens Colony",
+            "Ca Mens Colony Inmates": "CMC",
+            "CMC Inmates": "CMC",
             "Cal Poly Campus Residents": "CalPoly"
         }
        
@@ -171,13 +172,13 @@ class Stats:
 
         # Overall
         message = \
-            f"{update_date}\n" \
-            f"New: {self.__add_plus(status_delta['total'])}\n" \
-            f"Active: {status_dict['active']} ({self.__add_plus(status_delta['active'])})\n"
+            f"{update_date.strftime('%b %d')}\n" \
+            f"New {self.__add_plus(status_delta['total'])}\n" \
+            f"Active {status_dict['active']} ({self.__add_plus(status_delta['active'])})\n"
 
         # Deaths
         if status_delta["deaths"] > 0:
-            message += f"Deaths: {self.__add_plus(status_delta['deaths'])}\n"
+            message += f"Deaths {self.__add_plus(status_delta['deaths'])}\n"
 
 #        # Hospitalizations
 #        message += \
@@ -185,15 +186,15 @@ class Stats:
 #            f"In ICU: {status_dict['icu']} ({self.__add_plus(status_delta['icu'])})\n" \
 
         # Top Cities
-        message += "\nTop Cities:\n"
+        message += "\nTop Cities\n"
         for k, v in top_cities.items():
-            message += self.__rename_city(k) + " (+" + str(v) + ")\n"
+            message += self.__rename_city(k) + " +" + str(v) + "\n"
 
         # Vaccination data
         dose1, dose2 = self.get_vaccinated()
 
         if dose2 != None:
             message += \
-                f"\nCA Vax Dose 1: {dose1 / 100000 * 100:.1f}%, Dose 2: {dose2 / 100000 * 100:.1f}%"
+                f"\nCA Vax\nDose 1 {dose1 / 100000 * 100:.1f}%\nDose 2 {dose2 / 100000 * 100:.1f}%"
 
         return message
