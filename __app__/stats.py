@@ -1,7 +1,6 @@
 import psycopg2
 import pandas as pd
 import numpy as np
-import math
 import requests
 import json
 import logging
@@ -115,14 +114,14 @@ class Stats:
 
             ca_data = [item for item in content["vaccination_data"] if item["Location"] == "CA"][0]
             
-            #dose1 = ca_data["Administered_Dose1_Per_100K"]
+            dose1 = ca_data["Administered_Dose1_Per_100K"]
             dose2 = ca_data["Administered_Dose2_Per_100K"]
         except Exception as e:
             logging.error("Failed to retrieve vaccine info.")
             logging.error(e)
             return None
 
-        return  dose2
+        return  dose1, dose2
 
     # def get_test_positivity(self):
         
@@ -169,17 +168,16 @@ class Stats:
     def get_stats(self):
         update_date, status_dict, status_delta = self.get_status()
         top_cities = self.get_top_cities()
-        #positivity = self.get_test_positivity()
 
         # Overall
         message = \
             f"{update_date}\n" \
-            f"Total: {status_dict['total']} ({self.__add_plus(status_delta['total'])})\n" \
+            f"New: {self.__add_plus(status_delta['total'])}\n" \
             f"Active: {status_dict['active']} ({self.__add_plus(status_delta['active'])})\n"
 
         # Deaths
         if status_delta["deaths"] > 0:
-            message += f"Deaths: {status_dict['deaths']} ({self.__add_plus(status_delta['deaths'])})\n"
+            message += f"Deaths: {self.__add_plus(status_delta['deaths'])}\n"
 
 #        # Hospitalizations
 #        message += \
@@ -191,18 +189,11 @@ class Stats:
         for k, v in top_cities.items():
             message += self.__rename_city(k) + " (+" + str(v) + ")\n"
 
-        # Positivity is not being published anymore
-
-        # # Positivity
-        # if status_dict['test_positivity'] != None and not math.isnan(status_dict['test_positivity']):
-        #     message += \
-        #         f"\nPositivity: {status_dict['test_positivity']: .2f}%"
-
         # Vaccination data
-        dose2 = self.get_vaccinated()
+        dose1, dose2 = self.get_vaccinated()
 
         if dose2 != None:
             message += \
-                f"\nCA Vaccinated: {dose2 / 100000 * 100:.2f}%"
+                f"\nCA Vax Dose 1: {dose1 / 100000 * 100:.1f}%, Dose 2: {dose2 / 100000 * 100:.1f}%"
 
         return message
