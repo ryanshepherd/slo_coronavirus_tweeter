@@ -114,14 +114,14 @@ class Stats:
 
             ca_data = [item for item in content["vaccination_data"] if item["Location"] == "CA"][0]
             
-            dose1 = ca_data["Administered_Dose1_Per_100K"]
-            dose2 = ca_data["Administered_Dose2_Per_100K"]
+            dose1 = ca_data["Administered_Dose1_Pop_Pct"]
+            dose2 = ca_data["Administered_Dose2_Pop_Pct"]
         except Exception as e:
             logging.error("Failed to retrieve vaccine info.")
             logging.error(e)
-            return None
+            return None, None
 
-        return  dose1, dose2
+        return dose1, dose2
 
     # def get_test_positivity(self):
         
@@ -195,6 +195,6 @@ class Stats:
 
         if dose2 != None:
             message += \
-                f"\nCA Vax\nDose 1 {dose1 / 100000 * 100:.1f}%\nDose 2 {dose2 / 100000 * 100:.1f}%"
+                f"\nCA Vax\nDose 1 {dose1:.1f}%\nDose 2 {dose2:.1f}%"
 
         return message
